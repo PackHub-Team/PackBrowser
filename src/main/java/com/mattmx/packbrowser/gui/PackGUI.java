@@ -1,9 +1,6 @@
 package com.mattmx.packbrowser.gui;
 
-import com.mattmx.packbrowser.gui.components.PackBlock;
-import com.mattmx.packbrowser.gui.components.SearchBar;
-import com.mattmx.packbrowser.gui.components.SectionBrowser;
-import com.mattmx.packbrowser.gui.components.UIColors;
+import com.mattmx.packbrowser.gui.components.*;
 import com.mattmx.packbrowser.util.packhub.AbstractPack;
 import com.mattmx.packbrowser.util.packhub.PackHub;
 import gg.essential.elementa.ElementaVersion;
@@ -24,13 +21,17 @@ import java.util.List;
 
 public class PackGUI extends WindowScreen {
     private Screen parent;
+    private UIComponent viewer;
     UIComponent searchBar;
     UIComponent sections;
+    UIComponent scrollable;
+    UIComponent divider;
 
     public PackGUI(Screen parent) {
         super(ElementaVersion.V2);
         this.parent = parent;
 //        List<AbstractPack> packs = PackHub.api().getRecentPacks();
+        viewer = new PackViewer(getWindow());
         UIComponent background = new UIBlock()
                 .setX(new PixelConstraint(0))
                 .setY(new PixelConstraint(0))
@@ -53,7 +54,7 @@ public class PackGUI extends WindowScreen {
         searchBar = new SearchBar("Packs", this)
                 .setX(new RelativeConstraint(0))
                 .setY(new RelativeConstraint(0))
-                .setWidth(new FillConstraint())
+                .setWidth(new RelativeConstraint(1f))
                 .setHeight(new PixelConstraint(30f))
                 .setChildOf(center);
         // next bit
@@ -68,11 +69,49 @@ public class PackGUI extends WindowScreen {
                         new UIText(PackTabs.POPULAR.toString())
                                 .setColor(UIColors.TEXT)
                                 .onMouseClickConsumer((e) -> setTab(PackTabs.POPULAR, 2))
-                ), 15f, UIColors.TEXT_ACTIVE, UIColors.HIGHLIGHT)
+                ), 15f, UIColors.TEXT_ACTIVE, UIColors.TEXT)
+                .setX(new PixelConstraint(0f))
+                .setY(new AdditiveConstraint(new SiblingConstraint(), new PixelConstraint(5f)))
+                .setColor(UIColors.BACKGROUND)
+                .setWidth(new SubtractiveConstraint(new RelativeConstraint(1f), new PixelConstraint(30f)))
+                .setChildOf(center);
+        divider = new UIHorizontalLine(2f)
+                .setColor(UIColors.BACKGROUND_BAR)
                 .setX(new PixelConstraint(15f))
                 .setY(new AdditiveConstraint(new SiblingConstraint(), new PixelConstraint(3f)))
-                .setColor(UIColors.BACKGROUND)
+                .setWidth(new SubtractiveConstraint(new RelativeConstraint(1f), new PixelConstraint(30f)))
                 .setChildOf(center);
+        scrollable = new ScrollComponent()
+                .setX(new PixelConstraint(15f))
+                .setY(new AdditiveConstraint(new SiblingConstraint(), new PixelConstraint(3f)))
+                .setWidth(new SubtractiveConstraint(new RelativeConstraint(1f), new PixelConstraint(30f)))
+                .setHeight(new SubtractiveConstraint(new FillConstraint(true), new PixelConstraint(3f)))
+                .setColor(UIColors.HIGHLIGHT)
+                .setChildOf(center);
+        AbstractPack pack = new AbstractPack();
+        pack.setName("MattMX Private");
+        pack.setDescription("Private pack for boosters of PackHub! Now public.");
+        pack.setDownloads(2030);
+        pack.setIcon("https://cdn.mos.cms.futurecdn.net/6QQEiDSc3p6yXjhohY3tiF.jpg");
+        pack.setPreviews(new String[] {"https://www.pcgamesn.com/wp-content/uploads/2020/09/MinecraftPackSeed.jpg"});
+        pack.setPrice("FREE");
+        UIComponent pack1 = new PackBlock(pack)
+                .setX(new SiblingConstraint(4f))
+                .setY(new PixelConstraint(0f))
+                .setWidth(new SubtractiveConstraint(new RelativeConstraint(0.5f), new PixelConstraint(8f)))
+                .setHeight(new PixelConstraint(100f))
+                .setColor(Color.WHITE)
+                .setChildOf(scrollable);
+        new PackBlock(pack)
+                .setX(new SiblingConstraint(4f))
+                .setY(new PixelConstraint(0f))
+                .setWidth(new RelativeConstraint(4f))
+                .setHeight(new PixelConstraint(100f))
+                .setColor(Color.WHITE)
+                .setChildOf(scrollable);
+        pack1.onMouseClickConsumer(e -> {
+            ((PackViewer)viewer).open(pack);
+        });
     }
 
     public void search(String value) {

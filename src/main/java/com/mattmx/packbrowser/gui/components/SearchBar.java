@@ -81,8 +81,6 @@ public class SearchBar extends UIBlock {
             }
         });
         search.onKeyTypeConsumer((c, i) -> {
-            System.out.println(searchIcon.getTop() + " " + search.getTop());
-            System.out.println(searchIcon.getLeft() + " " + search.getLeft());
             if (i == GLFW_KEY_ENTER) {
                 // execute search
                 _parent.search(((UITextInput)search).getText());

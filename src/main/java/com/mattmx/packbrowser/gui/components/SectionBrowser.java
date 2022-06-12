@@ -28,7 +28,6 @@ public class SectionBrowser extends UIBlock {
             text.setY(new CenterConstraint());
             text.setChildOf(this);
         }
-        setWidth(new ChildBasedMaxSizeConstraint());
         setHeight(new ChildBasedMaxSizeConstraint());
     }
 
@@ -41,10 +40,10 @@ public class SectionBrowser extends UIBlock {
     public void update() {
         for (int i = 0; i < texts.size(); i++) {
             UIText text = (UIText) texts.get(i);
-            if (selected != i) {
-                text.setColor(inactive);
-            } else {
+            if (selected == i) {
                 text.setColor(active);
+            } else {
+                text.setColor(inactive);
             }
         }
     }
