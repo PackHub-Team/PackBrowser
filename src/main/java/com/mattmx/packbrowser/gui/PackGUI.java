@@ -105,7 +105,7 @@ public class PackGUI extends WindowScreen {
         new PackBlock(pack)
                 .setX(new SiblingConstraint(4f))
                 .setY(new PixelConstraint(0f))
-                .setWidth(new RelativeConstraint(4f))
+                .setWidth(new AdditiveConstraint(new RelativeConstraint(0.5f), new PixelConstraint(4f)))
                 .setHeight(new PixelConstraint(100f))
                 .setColor(Color.WHITE)
                 .setChildOf(scrollable);
