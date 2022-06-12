@@ -31,6 +31,10 @@ public class SectionBrowser extends UIBlock {
         setHeight(new ChildBasedMaxSizeConstraint());
     }
 
+    public int getSelectedNum() {
+        return selected;
+    }
+
     public void setSelected(int i) {
         selected = i;
     }

@@ -18,18 +18,21 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_ENTER;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
 
 public class SearchBar extends UIBlock {
+    private Runnable onStartSearch;
+    private Runnable onStopSearch;
     private final PackGUI _parent;
     private boolean searching = false;
+    UIComponent search;
 
     public SearchBar(String title, PackGUI parent) {
         this._parent = parent;
         setColor(UIColors.BACKGROUND_BAR);
         enableEffect(new ScissorEffect());
-        UIComponent searchIcon = new UIText("\u009E", false)
+        UIComponent searchIcon = new UIText("\u009F", false)
                 .setX(new PixelConstraint(15f))
                 .setY(new AdditiveConstraint(new CenterConstraint(), new PixelConstraint(30f)))
                 .setChildOf(this);
-        UIComponent search = new UITextInput("Search",
+        search = new UITextInput("Search",
                     false,
                     UIColors.HIGHLIGHT,
                     UIColors.TEXT_ACTIVE
@@ -70,6 +73,7 @@ public class SearchBar extends UIBlock {
             searchIcon.unhide(false);
             searchIcon.animateTo(searchIconAnim);
             searching = true;
+            onStartSearch.run();
             animSearchButton.onCompleteRunnable(() -> {
                 titleText.hide();
                 searchButton.hide();
@@ -89,7 +93,7 @@ public class SearchBar extends UIBlock {
             }
         });
 
-        new UIText("\u009E", false)
+        new UIText("\u009F", false)
                 .setX(new CenterConstraint())
                 .setY(new CenterConstraint())
                 .setTextScale(new PixelConstraint(0.8f))
@@ -98,6 +102,8 @@ public class SearchBar extends UIBlock {
 
     public void hideSearch(UIComponent searchButton, UIComponent titleText, UIComponent search, UIComponent searchIcon) {
         ((UITextInput)search).setText("");
+        searching = false;
+        onStopSearch.run();
         _parent.search(null);
         AnimatingConstraints animSearchButton = searchButton.makeAnimation();
         AnimatingConstraints animText = titleText.makeAnimation();
@@ -113,10 +119,24 @@ public class SearchBar extends UIBlock {
         searchButton.animateTo(animSearchButton);
         search.animateTo(searchAnim);
         searchIcon.animateTo(searchIconAnim);
-        searching = false;
         animSearchButton.onCompleteRunnable(() -> {
             search.hide();
             searchIcon.hide();
         });
+    }
+    public boolean isSearching() {
+        return searching;
+    }
+
+    public String getText() {
+        return ((UITextInput)search).getText();
+    }
+    public SearchBar onSearch(Runnable r) {
+        onStartSearch = r;
+        return this;
+    }
+    public SearchBar onStopSearch(Runnable r) {
+        onStopSearch = r;
+        return this;
     }
 }

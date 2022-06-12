@@ -29,8 +29,12 @@ public class PackBlock extends UIRoundedRectangle {
         UIComponent preview = null;
         try {
             // change to pack preview image or nothing
-            preview = UIImage.ofURL(new URL(pack.getFirstPreview()))
-                    .setX(new CenterConstraint())
+            if (pack.hasPreview()) {
+                preview = UIImage.ofURL(new URL(pack.getFirstPreview()));
+            } else {
+                preview = UIImage.ofResource(pack.getFirstPreview());
+            }
+            preview.setX(new CenterConstraint())
                     .setY(new CenterConstraint())
                     .setWidth(new RelativeConstraint(1f))
                     .setHeight(new MaxConstraint(new ImageAspectConstraint(), new RelativeConstraint(1f)))
@@ -49,8 +53,13 @@ public class PackBlock extends UIRoundedRectangle {
                 .setRadius(new PixelConstraint(this.getRadius()));
         try {
             // icon
-            UIImage.ofURL(new URL(pack.getIcon()))
-                    .setX(new SubtractiveConstraint(new RelativeConstraint(1f), new PixelConstraint(55f)))
+            UIImage icon;
+            if (pack.hasIcon()) {
+                icon = UIImage.ofURL(new URL(pack.getIcon()));
+            } else {
+                icon = UIImage.ofResource(pack.getIcon());
+            }
+            icon.setX(new SubtractiveConstraint(new RelativeConstraint(1f), new PixelConstraint(55f)))
                     .setY(new PixelConstraint(5f))
                     .setWidth(new PixelConstraint(50f))
                     .setHeight(new PixelConstraint(50f))
@@ -71,13 +80,12 @@ public class PackBlock extends UIRoundedRectangle {
         new UIWrappedText(pack.getDescription(), false)
                 .setColor(UIColors.TEXT)
                 .setTextScale(new PixelConstraint(1f))
-                .setWidth(new SubtractiveConstraint(new RelativeConstraint(1f), new PixelConstraint(75f)))
-                .setHeight(new RelativeConstraint(1f))
                 .setX(new PixelConstraint(15f))
                 .setY(new AdditiveConstraint(new SiblingConstraint(), new PixelConstraint(5f)))
+                .setWidth(new SubtractiveConstraint(new RelativeConstraint(1f), new PixelConstraint(75f)))
                 .setChildOf(this);
         // downloads
-        new UIText("\u009D " + pack.getDownloadsShort(), true)
+        new UIText("\u009E " + pack.getDownloadsShort(), true)
                 .setHeight(new PixelConstraint(15f))
                 .setX(new SubtractiveConstraint(new RelativeConstraint(1f), new PixelConstraint(30f)))
                 .setY(new SubtractiveConstraint(new RelativeConstraint(1f), new PixelConstraint(15f)))

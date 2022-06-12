@@ -2,13 +2,16 @@ package com.mattmx.packbrowser.util.packhub;
 
 import lombok.Builder;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
 @Builder
 public class PackHubSearchQuery {
-    private String search;
-    private Category category;
-    private String version;
-    private SortBy sortBy;
-    enum SortBy {
+    private final String search;
+    private final Category category;
+    private final String version;
+    private final SortBy sortBy;
+    public enum SortBy {
         DATE_OLDEST("date_oldest"), DATE_NEWEST("date_newest"), RELEVENCY("relevency");
         String st;
         SortBy(String by) {
@@ -19,7 +22,7 @@ public class PackHubSearchQuery {
             return st;
         }
     }
-    enum Category {
+    public enum Category {
         ALL("all"), PACKS("packs"), CREATORS("pack_makers");
         String st;
         Category(String s) {
@@ -29,6 +32,10 @@ public class PackHubSearchQuery {
         public String toString() {
             return st;
         }
+    }
+
+    public boolean valid() {
+        return search != null && search.length() >= 3;
     }
 
     public String build() {

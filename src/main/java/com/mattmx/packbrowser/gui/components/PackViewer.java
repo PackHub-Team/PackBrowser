@@ -7,6 +7,7 @@ import gg.essential.elementa.components.UIImage;
 import gg.essential.elementa.components.UIText;
 import gg.essential.elementa.components.UIWrappedText;
 import gg.essential.elementa.constraints.CenterConstraint;
+import gg.essential.elementa.constraints.FillConstraint;
 import gg.essential.elementa.constraints.PixelConstraint;
 import gg.essential.elementa.constraints.RelativeConstraint;
 import gg.essential.elementa.effects.OutlineEffect;
@@ -24,8 +25,8 @@ public class PackViewer extends UIBlock {
 
     public PackViewer(UIComponent parent) {
         setParent(parent);
-        setWidth(new RelativeConstraint(1f));
-        setHeight(new RelativeConstraint(1f));
+        setWidth(new FillConstraint(false));
+        setHeight(new FillConstraint(false));
         setX(new PixelConstraint(0f));
         setY(new PixelConstraint(0f));
         setColor(new Color(0, 0, 0, 40));

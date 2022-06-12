@@ -13,7 +13,7 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AbstractPack {
+public class AbstractPack extends ValidResponse {
     public AbstractPack() {
 
     }
@@ -32,11 +32,19 @@ public class AbstractPack {
     @Getter @Setter private String updatedAt;
 
     public String getFirstPreview() {
-        return previews == null ? "resources/assets/packbrowser/preview_default.png" : (previews.length > 0 ? previews[0] : null);
+        return previews == null ? "/assets/packbrowser/preview_default.png" : (previews.length > 0 ? previews[0] : "/assets/packbrowser/preview_default.png");
+    }
+
+    public boolean hasPreview() {
+        return previews != null && previews.length > 0;
+    }
+
+    public boolean hasIcon() {
+        return icon != null;
     }
 
     public String getIcon() {
-        return icon == null ? "resources/assets/packbrowser/icon_default.png" : icon;
+        return icon == null ? "/assets/packbrowser/icon_default.png" : icon;
     }
 
     public String getDownloadsShort() {

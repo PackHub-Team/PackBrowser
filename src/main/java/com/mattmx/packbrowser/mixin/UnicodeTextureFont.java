@@ -21,7 +21,6 @@ public class UnicodeTextureFont {
     public Resource getGlyphImage$ResourceManager$getResource(ResourceManager resourceManager, Identifier identifier){
         Identifier fontSheet = new Identifier("packbrowser", "unicode_page_00.png");
         try {
-            System.out.print(fontSheet.getPath());
             resource = resourceManager.getResource(fontSheet);
         } catch (IOException e) {
             e.printStackTrace();

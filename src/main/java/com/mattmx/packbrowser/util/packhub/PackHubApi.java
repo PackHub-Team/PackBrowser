@@ -1,11 +1,10 @@
 package com.mattmx.packbrowser.util.packhub;
 
+import java.net.*;
 import java.util.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
@@ -51,7 +50,9 @@ public class PackHubApi {
 
     private String getPage(String url) {
         try {
-            URLConnection connection = new URL(url).openConnection();
+            URL u = new URL(url);
+            URI uri = new URI(u.getProtocol(), u.getUserInfo(), IDN.toASCII(u.getHost()), u.getPort(), u.getPath(), u.getQuery(), u.getRef());
+            URLConnection connection = new URL(uri.toASCIIString()).openConnection();
             connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
             connection.connect();
 
@@ -63,7 +64,7 @@ public class PackHubApi {
                 sb.append(line);
             }
             return sb.toString();
-        } catch (IOException e) {
+        } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
         }
         return null;

@@ -7,7 +7,7 @@
   "authors": [],
   "contact": {},
   "license": "MIT",
-  "icon": "assets/packbrowser/icon.png",
+  "icon": "assets/packbrowser/icon_default.png",
   "environment": "*",
   "entrypoints": {
     "client": [
