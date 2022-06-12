@@ -13,11 +13,13 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+@Builder
 public class AbstractPack extends ValidResponse {
-    public AbstractPack() {
-
-    }
-    static Gson gson = new GsonBuilder().create();
+    static Gson gson = new GsonBuilder()
+            .registerTypeAdapter(AbstractPack.class, new AbstractPackDeserializer())
+            .registerTypeAdapter(new TypeToken<ArrayList<AbstractPack>>(){}.getType(), new AbstractPackListDeserializer())
+            .enableComplexMapKeySerialization()
+            .create();
 
     private int id;
     @Getter @Setter private String name;
@@ -25,7 +27,9 @@ public class AbstractPack extends ValidResponse {
     @Getter @Setter private int maker;
     @Getter @Setter private String icon;
     @Getter @Setter private String[] previews;
+    @Getter @Setter private String[] tags;
     @Getter @Setter private String price;
+    @Getter @Setter private boolean isPublic;
     @Getter @Setter private int downloads;
     @Getter @Setter private String version;
     @Getter @Setter private String createdAt;

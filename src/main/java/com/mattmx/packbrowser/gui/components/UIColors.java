@@ -7,6 +7,7 @@ public class UIColors {
     public static Color BACKGROUND_BAR = Color.decode("#202021");
     public static Color BACKGROUND_LINE = Color.decode("#505050");
     public static Color TEXT = Color.decode("#777779");
+    public static Color PACK_TEXT = new Color(65, 65, 65);
     public static Color HIGHLIGHT = Color.decode("#F7971C");
     public static Color TEXT_ACTIVE = Color.decode("#FFFFFF");
 }

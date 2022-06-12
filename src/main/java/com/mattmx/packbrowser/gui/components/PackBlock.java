@@ -43,11 +43,11 @@ public class PackBlock extends UIRoundedRectangle {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-        UIComponent grad = new GradientComponent(Color.WHITE, new Color(255, 255, 255, 20))
+        UIComponent grad = new GradientComponent(Color.WHITE, new Color(255, 255, 255, 0))
                 .setDirection(GradientComponent.GradientDirection.LEFT_TO_RIGHT)
-                .setX(new PixelConstraint(-100f))
+                .setX(new PixelConstraint(-20f))
                 .setY(new PixelConstraint(0))
-                .setWidth(new AdditiveConstraint(new RelativeConstraint(1f), new PixelConstraint(150f)))
+                .setWidth(new AdditiveConstraint(new RelativeConstraint(0.75f), new PixelConstraint(40f)))
                 .setHeight(new RelativeConstraint(1f))
                 .setChildOf(this)
                 .setRadius(new PixelConstraint(this.getRadius()));
@@ -72,17 +72,17 @@ public class PackBlock extends UIRoundedRectangle {
         new UIWrappedText(pack.getName(), false)
                 .setColor(Color.decode("#F7971C"))
                 .setTextScale(new PixelConstraint(1.5f))
-                .setWidth(new RelativeConstraint(0.75f))
+                .setWidth(new RelativeConstraint(0.5f))
                 .setX(new PixelConstraint(15f))
                 .setY(new PixelConstraint(15f))
                 .setChildOf(this);
         // description
         new UIWrappedText(pack.getDescription(), false)
-                .setColor(UIColors.TEXT)
+                .setColor(UIColors.PACK_TEXT)
                 .setTextScale(new PixelConstraint(1f))
                 .setX(new PixelConstraint(15f))
                 .setY(new AdditiveConstraint(new SiblingConstraint(), new PixelConstraint(5f)))
-                .setWidth(new SubtractiveConstraint(new RelativeConstraint(1f), new PixelConstraint(75f)))
+                .setWidth(new RelativeConstraint(0.5f))
                 .setChildOf(this);
         // downloads
         new UIText("\u009E " + pack.getDownloadsShort(), true)
@@ -104,7 +104,7 @@ public class PackBlock extends UIRoundedRectangle {
         });
         onMouseLeaveRunnable(() -> {
             AnimatingConstraints anim = grad.makeAnimation();
-            anim.setXAnimation(Animations.IN_OUT_EXP, 0.5f, new PixelConstraint(-100f));
+            anim.setXAnimation(Animations.IN_OUT_EXP, 0.5f, new PixelConstraint(-20f));
             grad.animateTo(anim);
             if (finalPreview != null) {
                 AnimatingConstraints anim1 = finalPreview.makeAnimation();
@@ -112,9 +112,6 @@ public class PackBlock extends UIRoundedRectangle {
                 anim1.setHeightAnimation(Animations.IN_OUT_EXP, 1f, new MaxConstraint(new ImageAspectConstraint(), new RelativeConstraint(1.0f)));
                 finalPreview.animateTo(anim1);
             }
-        });
-        onMouseClickConsumer((e) -> {
-            // pack selected, open in pack viewer
         });
     }
 

@@ -140,6 +140,9 @@ public class PackGUI extends WindowScreen {
                 case RECENT -> setPackDisplay(recent);
                 case EXCLUSIVE -> setPackDisplay(exclusive);
                 case POPULAR -> setPackDisplay(popular);
+                default -> {
+                    setPackDisplay(exclusive);
+                }
             }
         }
     }
@@ -149,27 +152,29 @@ public class PackGUI extends WindowScreen {
     }
 
     public void setPackDisplay(List<AbstractPack> packs, String text) {
-        scrollable.clearChildren();
-        if (packs == null || packs.size() == 0) {
-            new UIText(text).setColor(UIColors.TEXT)
-                    .setX(new CenterConstraint())
-                    .setY(new CenterConstraint())
-                    .setChildOf(scrollable);
-            return;
-        }
-        for (int i = 0; i < packs.size(); i++) {
-            AbstractPack pack = packs.get(i);
-            if (pack == null) return;
-            UIComponent packBlock = new PackBlock(pack)
-                    .setX(new SiblingConstraint(4f))
-                    .setY(new PixelConstraint(i * (100f + 4f)))
-                    .setWidth(new AdditiveConstraint(new RelativeConstraint(0.5f), new PixelConstraint(4f * (i % 2 + 1))))
-                    .setHeight(new PixelConstraint(100f))
-                    .setColor(Color.WHITE)
-                    .setChildOf(scrollable);
-            packBlock.onMouseClickConsumer(e -> {
-                ((PackViewer)viewer).open(pack);
-            });
+        synchronized (this) {
+            scrollable.clearChildren();
+            if (packs == null || packs.size() == 0) {
+                new UIText(text).setColor(UIColors.TEXT)
+                        .setX(new CenterConstraint())
+                        .setY(new CenterConstraint())
+                        .setChildOf(scrollable);
+                return;
+            }
+            for (int i = 0; i < packs.size(); i++) {
+                AbstractPack pack = packs.get(i);
+                if (pack == null) return;
+                UIComponent packBlock = new PackBlock(pack)
+                        .setX(new SiblingConstraint(4f))
+                        .setY(new PixelConstraint(i * (100f + 4f)))
+                        .setWidth(new AdditiveConstraint(new RelativeConstraint(0.5f), new PixelConstraint(4f * (i % 2 + 1))))
+                        .setHeight(new PixelConstraint(100f))
+                        .setColor(Color.WHITE)
+                        .setChildOf(scrollable);
+                packBlock.onMouseClickConsumer(e -> {
+                    ((PackViewer) viewer).open(pack);
+                });
+            }
         }
     }
 
@@ -188,7 +193,6 @@ public class PackGUI extends WindowScreen {
         if (tab.num() == browser.getSelectedNum()) return;
         browser.setSelected(tab.num());
         browser.update();
-        System.out.println("    " + browser.getSelectedNum());
         updatePackDisplay();
     }
 }
